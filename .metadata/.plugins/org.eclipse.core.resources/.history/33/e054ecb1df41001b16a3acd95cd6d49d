@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+environment/project/de.innot.avreclipse.configuration.app.debug.194392200/AVRTARGETFCPU/delimiter=;
+environment/project/de.innot.avreclipse.configuration.app.debug.194392200/AVRTARGETFCPU/operation=replace
+environment/project/de.innot.avreclipse.configuration.app.debug.194392200/AVRTARGETFCPU/value=1000000
+environment/project/de.innot.avreclipse.configuration.app.debug.194392200/append=true
+environment/project/de.innot.avreclipse.configuration.app.debug.194392200/appendContributed=true
+environment/project/de.innot.avreclipse.configuration.app.release.1705906553/AVRTARGETFCPU/delimiter=;
+environment/project/de.innot.avreclipse.configuration.app.release.1705906553/AVRTARGETFCPU/operation=replace
+environment/project/de.innot.avreclipse.configuration.app.release.1705906553/AVRTARGETFCPU/value=8000000
+environment/project/de.innot.avreclipse.configuration.app.release.1705906553/append=true
+environment/project/de.innot.avreclipse.configuration.app.release.1705906553/appendContributed=true

@@ -1,0 +1,29 @@
+/*
+ * FinalProject_MC2.h
+ *
+ *  Created on: ??þ/??þ/????
+ *      Author: Daly
+ */
+
+#ifndef FINALPROJECT_MC2_H_
+#define FINALPROJECT_MC2_H_
+
+#define MC1_Ready 0x10
+#define MC2_Ready 0x01
+
+#define EEPROM_SA 0x0311
+
+	volatile uint8 keyPressed;
+	volatile uint8 PassRec;
+	volatile uint8 keyOption=0;
+	volatile uint8 PassMC1[6];
+	volatile uint8 flag=1;
+
+#include "micro_config.h"
+#include "std_types.h"
+#include "common_macros.h"
+#include "external_eeprom.h"
+#include "i2c.h"
+#include "uart.h"
+
+#endif /* FINALPROJECT_MC2_H_ */

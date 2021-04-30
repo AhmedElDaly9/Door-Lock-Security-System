@@ -1,0 +1,20 @@
+/*
+ * FinalProject.h
+ *
+ *  Created on: ??þ/??þ/????
+ *      Author: Daly
+ */
+
+#ifndef FINALPROJECT_H_
+#define FINALPROJECT_H_
+
+#define MC1_Ready 0x10
+#define MC2_Ready 0x01
+
+#include "micro_config.h"
+#include "std_types.h"
+#include "common_macros.h"
+#include "uart.h"
+#include "keypad.h"
+
+#endif /* FINALPROJECT_H_ */

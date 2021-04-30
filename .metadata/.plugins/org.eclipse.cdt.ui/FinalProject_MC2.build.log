@@ -1,0 +1,41 @@
+??:??:?? **** Incremental Build of configuration Debug for project FinalProject_MC2 ****
+make all 
+Building file: ../FinalProject_MC2.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"FinalProject_MC2.d" -MT"FinalProject_MC2.o" -c -o "FinalProject_MC2.o" "../FinalProject_MC2.c"
+In file included from ../micro_config.h:22,
+                 from ../timer1.h:21,
+                 from ../FinalProject_MC2.h:26,
+                 from ../FinalProject_MC2.c:8:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../FinalProject_MC2.c: In function 'OpenDoorMC2':
+../FinalProject_MC2.c:150: warning: integer overflow in expression
+Finished building: ../FinalProject_MC2.c
+ 
+Building target: FinalProject_MC2.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,FinalProject_MC2.map -mmcu=atmega16 -o "FinalProject_MC2.elf"  ./FinalProject_MC2.o ./external_eeprom.o ./i2c.o ./timer1.o ./uart.o   
+Finished building target: FinalProject_MC2.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S FinalProject_MC2.elf  >"FinalProject_MC2.lss"
+Finished building: FinalProject_MC2.lss
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega16 FinalProject_MC2.elf
+AVR Memory Usage
+----------------
+Device: atmega16
+
+Program:    3420 bytes (20.9% Full)
+(.text + .data + .bootloader)
+
+Data:         45 bytes (4.4% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+??:??:?? Build Finished. 0 errors, 2 warnings. (took 1s.304ms)
+

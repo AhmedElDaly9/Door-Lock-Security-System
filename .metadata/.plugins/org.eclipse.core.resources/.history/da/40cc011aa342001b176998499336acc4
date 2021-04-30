@@ -1,0 +1,29 @@
+/*
+ * Timer1.c
+ *
+ *  Created on: ??þ/??þ/????
+ *      Author: Daly
+ */
+
+/*******************************************************************************
+ *                                   INCLUDES                                  *
+ *******************************************************************************/
+
+#include "Timer1.h"
+
+/*******************************************************************************
+ *                      Functions Definitions                                  *
+ *******************************************************************************/
+
+void Timer1_init (const Timer1_ConfigType * T1_ConfigType)
+{
+	SET_BIT(SREG,7);
+
+	TCCR1B = (TCCR1B & 0xF8) | (T1_ConfigType->T1_Clock);
+	TCNT1 = T1_ConfigType->T1_StartValue;
+
+	if (T1_ConfigType->T1_Mode == OVF)
+	{
+		SET_BIT(TIMSK |= (1<<TOIE1));
+	}
+}

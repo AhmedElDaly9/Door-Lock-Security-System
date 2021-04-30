@@ -1,0 +1,202 @@
+/*
+ * FinalProject.c
+ *
+ *  Created on: 16/12þ/2020
+ *      Author: Daly
+ */
+
+
+#include "FinalProject_MC1.h"
+
+volatile uint8 keyPressed;
+volatile uint8 PassRec;
+volatile uint8 keyOption=0;
+uint8 PassMC1[6];
+volatile uint8 flag=1;
+uint8 i;
+uint8 j;
+
+void display_options (void);
+void ChangePassword(void);
+void EnterNewPassword(void);
+
+int main (void)
+{
+	LCD_init();
+	UART_init();
+
+	while(1)
+	{
+
+		UART_sendByte(MC1_Ready);
+		PassRec=UART_receiveByte();
+
+		if (PassRec==0)
+		{
+			EnterNewPassword();
+		}
+		else if (PassRec==1)
+		{
+			display_options();
+		}
+	}
+}
+void display_options (void)
+{
+	LCD_clearScreen();
+	LCD_displayStringRowColumn(0,0,"*: Change pass");
+	LCD_goToRowColumn(1,0);
+	LCD_displayStringRowColumn(1,0,"#: Open door");
+	keyOption = KeyPad_getPressedKey();
+
+	while (keyOption != '*' && keyOption != '#')
+	{
+		keyOption = KeyPad_getPressedKey();
+	}
+
+	if (keyOption=='*')
+	{
+		_delay_ms(1000);
+
+		while (UART_receiveByte() != MC2_Ready) {}
+		UART_sendByte(keyOption);
+
+		ChangePassword();
+	}
+	else if (keyOption=='#')
+	{
+
+	}
+}
+
+void ChangePassword(void)
+{
+	flag=1;
+	LCD_clearScreen();
+	LCD_displayStringRowColumn(0,0,"Current password:");
+	LCD_goToRowColumn(1,0);
+
+	UART_sendByte(MC1_Ready);
+	UART_receiveString(PassMC1);
+
+	i=0;
+	while (i<5)
+	{
+		keyPressed = KeyPad_getPressedKey(); /* get the pressed key number */
+		if (PassMC1[i] != keyPressed + '0')
+		{
+			flag=0;
+		}
+		LCD_displayCharacter('*');
+		_delay_ms(1000); /* Press time */
+		i++;
+	}
+
+	if (flag==1)
+	{
+		EnterNewPassword();
+	}
+	else if (flag==0)
+	{
+		flag=1;
+		j=0;
+		do {
+			LCD_clearScreen();
+			LCD_displayString("Wrong Password");
+			_delay_ms(1000);
+			LCD_clearScreen();
+			LCD_displayString("Enter Pass:");
+			LCD_goToRowColumn(1,0);
+
+			i=0;
+			while (i<5)
+			{
+				keyPressed = KeyPad_getPressedKey(); /* get the pressed key number */
+				if (PassMC1[i] != keyPressed+'0')
+				{
+					flag=0;
+				}
+				LCD_displayCharacter('*');
+				_delay_ms(1000); /* Press time */
+				i++;
+			}
+			j++;
+		}while (j<2 && flag==0);
+
+		if (flag==0)
+		{
+			LCD_displayString ("55555555555555555555555555555555");
+		}
+		else
+		{
+			ChangePassword();
+		}
+	}
+}
+
+void EnterNewPassword(void)
+{
+	while (1)
+	{
+		flag=1;
+		LCD_clearScreen();
+		LCD_displayStringRowColumn(0,0,"Enter new pass:");
+		LCD_goToRowColumn(1,0);
+
+		i=0;
+		while (i<5)
+		{
+			keyPressed = KeyPad_getPressedKey(); /* get the pressed key number */
+			if (keyPressed >= 0 && keyPressed <=9)
+			{
+				PassMC1[i]= keyPressed + '0';
+				LCD_displayCharacter('*');
+				_delay_ms(1000); /* Press time */
+				i++;
+			}
+		}
+
+		LCD_clearScreen();
+		LCD_displayStringRowColumn(0,0,"Re-enter pass:");
+		LCD_goToRowColumn(1,0);
+
+		i=0;
+		while (i<5)
+		{
+			keyPressed = KeyPad_getPressedKey(); /* get the pressed key number */
+
+			if (keyPressed >= 0 && keyPressed <=9)
+			{
+				if (PassMC1[i] != (keyPressed+'0'))
+				{
+					flag=0;
+				}
+				LCD_displayCharacter('*');
+				_delay_ms(1000); /* Press time */
+				i++;
+			}
+		}
+
+
+		if (flag == 1)
+		{
+			PassMC1[5]= '\0';
+
+			while(UART_receiveByte() != MC2_Ready){}
+			UART_sendString(PassMC1);
+
+			PassRec=1;
+
+			LCD_clearScreen();
+			LCD_displayStringRowColumn(0,0,"Pass Recorded");
+			_delay_ms(1000);
+			break;
+		}
+		else
+		{
+			LCD_clearScreen();
+			LCD_displayStringRowColumn(0,0,"Not matched");
+			_delay_ms(1000);
+		}
+	}
+}

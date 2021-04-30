@@ -1,0 +1,27 @@
+/*
+ * FinalProject.h
+ *
+ *  Created on: ??þ/??þ/????
+ *      Author: Daly
+ */
+
+#ifndef FINALPROJECT_H_
+#define FINALPROJECT_H_
+
+#define MC1_Ready 0x10
+#define MC2_Ready 0x01
+
+uint8 keyPressed;
+volatile uint8 PassRec;
+volatile uint8 keyOption=0;
+volatile uint8 PassMC1[6];
+volatile uint8 flag=1;
+
+#include "micro_config.h"
+#include "std_types.h"
+#include "common_macros.h"
+#include "uart.h"
+#include "keypad.h"
+#include "lcd.h"
+
+#endif /* FINALPROJECT_H_ */

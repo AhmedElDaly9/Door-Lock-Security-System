@@ -1,0 +1,26 @@
+/*
+ * FinalProject_MC2.h
+ *
+ *  Created on: ??þ/??þ/????
+ *      Author: Daly
+ */
+
+#ifndef FINALPROJECT_MC2_H_
+#define FINALPROJECT_MC2_H_
+
+#define MC1_Ready 0x10
+#define MC2_Ready 0x01
+#define BUZZER 0x55
+#define OK 0xAA
+#define EEPROM_SA 0x0A
+#define RecBefore 0x11
+
+#include "Timer1.h"
+#include "micro_config.h"
+#include "std_types.h"
+#include "common_macros.h"
+#include "external_eeprom.h"
+#include "i2c.h"
+#include "uart.h"
+
+#endif /* FINALPROJECT_MC2_H_ */

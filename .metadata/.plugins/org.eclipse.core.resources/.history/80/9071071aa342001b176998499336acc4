@@ -1,0 +1,52 @@
+/*
+ * Timer1.h
+ *
+ *  Created on: ??þ/??þ/????
+ *      Author: Daly
+ */
+
+#ifndef TIMER1_H_
+#define TIMER1_H_
+
+/*******************************************************************************
+ *                                   INCLUDES                                  *
+ *******************************************************************************/
+
+#include "std_types.h"
+#include "micro_config.h"
+#include "common_macros.h"
+
+/*******************************************************************************
+ *                              Types Declaration                              *
+ *******************************************************************************/
+
+typedef enum
+{
+	NO_CLOCK,CLK,CLK_8,CLK_64,CLK_256,CLK_1024,EX_FALLING,EX_RISING
+}Timer1_Clock;
+
+typedef enum
+{
+	NORMAL,TOGGLE_ON_CM,CLEAR_ON_CM,SET_ON_CM
+}Timer1_CompareMode;
+
+typedef enum
+{
+	NO_INT,OVF,OCB,OCA
+}Timer1_Mode;
+
+typedef struct
+{
+	Timer1_Clock T1_Clock;
+	Timer1_CompareMode T1_CompareMode;
+	Timer1_Mode T1_Mode;
+	uint16 T1_StartValue;
+	uint16 T1_CompareValue;
+}Timer1_ConfigType;
+
+/*******************************************************************************
+ *                      Functions Prototypes                                   *
+ *******************************************************************************/
+void Timer1_init (const Timer1_ConfigType * T1_ConfigType);
+
+#endif /* TIMER1_H_ */

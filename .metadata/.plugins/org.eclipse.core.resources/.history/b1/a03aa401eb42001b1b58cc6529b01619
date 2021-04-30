@@ -1,0 +1,147 @@
+/*
+ * FinalProject_MC2.c
+ *
+ *  Created on: ??þ/??þ/????
+ *      Author: Daly
+ */
+
+#include "FinalProject_MC2.h"
+
+void OpenDoorMC2 (void);
+void BUZZER_ON_MC2(uint8 seconds);
+void BUZZER_OFF_MC2(void);
+
+int main (void)
+{
+	/*volatile uint8 i;
+	volatile uint8 PassRecorded;
+	volatile uint8 HashDecide;
+	volatile uint8 choice;
+	uint8 PassMC2[6];
+	TWI_ConfigType TWI_Config = {FCPU_CLOCK,0x02,0x01};
+	UART_ConfigType UART_Config = {DISABLED,BIT1,BIT8,9600};
+	EEPROM_init(&TWI_Config);
+	UART_init(&UART_Config);
+
+	//EEPROM_readByte(EEPROM_SA,&PassRecorded);
+
+	while (1)
+	{
+		while(PassRecorded != RecBefore)
+		{
+			while (UART_receiveByte() != MC1_Ready) {}
+			UART_sendByte(0);
+
+			UART_sendByte(MC2_Ready);
+			UART_receiveString(PassMC2);
+
+
+			EEPROM_writeByte(EEPROM_SA,RecBefore);
+
+			for (i=0; i<5 ; i++)
+			{
+				EEPROM_writeByte(EEPROM_SA+(i+1),PassMC2[i]);
+			}
+			PassRecorded=RecBefore;
+			EEPROM_writeByte(EEPROM_SA,PassRecorded);
+		}
+
+		for (i=0; i<5 ;i++)
+		{
+			EEPROM_readByte(EEPROM_SA+(i+1),&PassMC2[i]);
+		}
+
+
+		while (UART_receiveByte() != MC1_Ready) {}
+		UART_sendByte(1);
+
+		UART_sendByte(MC2_Ready);
+		choice = UART_receiveByte();
+
+		if (choice == '*')
+		{
+			PassMC2[5]='#';
+
+			while (UART_receiveByte() != MC1_Ready) {}
+			UART_sendString(PassMC2);
+
+			UART_sendByte(MC2_Ready);
+			HashDecide = UART_receiveByte();
+
+			if (HashDecide == OK)
+			{
+				UART_sendByte(MC2_Ready);
+				UART_receiveString(PassMC2);
+
+				for (i=0; i<5 ; i++)
+				{
+					EEPROM_writeByte(EEPROM_SA+1+i,PassMC2[i]);
+				}
+			}
+			else
+			{
+				BUZZER_ON_MC2(10);
+			}
+		}
+		else if (choice == '#')
+		{
+			PassMC2[5]='#';
+
+			while (UART_receiveByte() != MC1_Ready) {}
+			UART_sendString(PassMC2);
+
+			UART_sendByte(MC2_Ready);
+			HashDecide=UART_receiveByte();
+
+			if (HashDecide == OK)
+			{
+				OpenDoorMC2();
+			}
+			else
+			{
+				BUZZER_ON_MC2(10);
+			}
+		}
+	}*/
+	LCD_init();
+	BUZZER_ON_MC2(1);
+}
+
+
+void BUZZER_ON_MC2(uint8 seconds)
+{
+	DDRA |= (1<<PA0);
+	PORTA |= (1<<PA0);
+	Timer1_setCallBack(BUZZER_OFF_MC2);
+	Timer1_ConfigType timer1_config = {F_CPU1024, COM1_NORMAL_MODE, TIMER1_OCA,0, 800*seconds};
+	timer1_init(&timer1_config);
+}
+
+void BUZZER_OFF_MC2(void)
+{
+	PORTA &= (~(1<<PA0));
+}
+
+
+void OpenDoorMC2 (void)
+{
+	/* configure pin PC0 and PC1 as output pins */
+	DDRD |= 0xC0;
+
+	// Rotate the motor --> clock wise
+	PORTD &= (~(1<<PD6));
+	PORTD |= (1<<PD7);
+	_delay_ms(15000);
+
+	PORTD &= (~(1<<PD6));
+	PORTD &= (~(1<<PD7));
+	_delay_ms(3000);
+
+	// Rotate the motor --> anti-clock wise
+	PORTD |= (1<<PD6);
+	PORTD &= (~(1<<PD7));
+	_delay_ms(15000);
+
+	PORTD &= (~(1<<PD6));
+	PORTD &= (~(1<<PD7));
+}

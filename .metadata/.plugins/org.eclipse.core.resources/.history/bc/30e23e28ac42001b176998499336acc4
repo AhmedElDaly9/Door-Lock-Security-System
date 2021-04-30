@@ -1,0 +1,68 @@
+/*
+ * Timer1.c
+ *
+ *  Created on: ??þ/??þ/????
+ *      Author: Daly
+ */
+
+/*******************************************************************************
+ *                                   INCLUDES                                  *
+ *******************************************************************************/
+
+#include "Timer1.h"
+
+static volatile void (*g_Timer1_Call_Back_Ptr)(void);
+
+ISR(TIMER1_COMPA_vect)
+{
+	(*g_Timer1_Call_Back_Ptr)();
+}
+
+/*******************************************************************************
+ *                      Functions Definitions                                  *
+ *******************************************************************************/
+
+void Timer1_init (const Timer1_ConfigType * T1_ConfigType)
+{
+	SET_BIT(SREG,7);
+
+	TCCR1B = (TCCR1B & 0xF8) | (T1_ConfigType->T1_Clock);
+	TCNT1 = T1_ConfigType->T1_StartValue;
+
+	if (T1_ConfigType->T1_Mode == OVF)
+	{
+		SET_BIT(TIMSK,TOIE1);
+	}
+
+	else if (T1_ConfigType->T1_Mode == OCB)
+	{
+		SET_BIT(TIMSK, OCIE1B);
+		SET_BIT(TCCR1B, WGM12);
+		SET_BIT(TCCR1A, FOC1B);
+		TCCR1A = (TCCR1A & 0xCF) | ((T1_ConfigType->T1_CompareMode)<<4);
+		OCR1B = T1_ConfigType->T1_CompareValue;
+	}
+
+	else if (T1_ConfigType->T1_Mode == OCA)
+	{
+		SET_BIT(TIMSK, OCIE1A);
+		SET_BIT(TCCR1B, WGM12);
+		SET_BIT(TCCR1A, FOC1A);
+		TCCR1A = (TCCR1A & 0x3F) | ((T1_ConfigType->T1_CompareMode)<<6);
+		OCR1B = T1_ConfigType->T1_CompareValue;
+	}
+}
+
+
+void T1Seconds (uint8 seconds)
+{
+	Timer1_ConfigType T1Config = {CLK_1024,NORMAL,OCA,0,800};
+	T1Config.T1_CompareValue = seconds * 800;
+	Timer1_init (&T1Config);
+}
+
+void Timer1_setCallBack(void(*Ptr2Func)(void))
+{
+	g_Timer1_Call_Back_Ptr = Ptr2Func;
+}
+
